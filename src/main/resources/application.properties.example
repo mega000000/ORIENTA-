@@ -1,0 +1,8 @@
+spring.datasource.url=${DATABASE_URL:jdbc:postgresql://localhost:5432/orientaplus}
+spring.datasource.username=${DATABASE_USERNAME:postgres}
+spring.datasource.password=${DATABASE_PASSWORD:your_password_here}
+spring.jpa.hibernate.ddl-auto=update
+server.port=${PORT:8081}
+jwt.secret=${JWT_SECRET:your_jwt_secret_here}
+logging.level.org.hibernate.SQL=WARN
+spring.jpa.show-sql=false
