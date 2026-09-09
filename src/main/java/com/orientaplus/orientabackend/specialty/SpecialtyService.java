@@ -80,4 +80,24 @@ public class SpecialtyService {
         }
         return mapToResponse(optionalSpecialty.get());
     }
+
+    public SpecialtyResponse assignUserSpecialty(long userId, long specialtyId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+
+        Specialty targetSpecialty = specialtyRepository.findById(specialtyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Specialty Not Found"));
+
+        // إذا كان المستخدم ديجا عندو specialty قديمة كنحيدو منها الـ user باش ما يوقعش Unique Constraint Violation
+        Specialty currentSpecialty = specialtyRepository.findByUser(user);
+        if (currentSpecialty != null && currentSpecialty.getId() != targetSpecialty.getId()) {
+            currentSpecialty.setUser(null);
+            specialtyRepository.save(currentSpecialty);
+        }
+
+        targetSpecialty.setUser(user);
+        Specialty saved = specialtyRepository.save(targetSpecialty);
+
+        return mapToResponse(saved);
+    }
 }

@@ -20,7 +20,7 @@ public class UserService {
 
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null){
-            throw new ResourceNotFoundException("Email already in use");
+            throw new RuntimeException("Email already in use");
         }
         String hashedPassword = passwordEncoder.encode(password);
 
@@ -34,10 +34,10 @@ public class UserService {
     public User loginUser(String email, String password){
         User user = userRepository.findByEmail(email);
         if (user==null){
-            throw new ResourceNotFoundException("Invalid email or password");
+            throw new RuntimeException("Invalid email or password");
         }
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
-            throw new ResourceNotFoundException("Invalid email or password");
+            throw new RuntimeException("Invalid email or password");
         }
         return user;
     }

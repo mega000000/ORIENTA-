@@ -44,4 +44,11 @@ public class SpecialtyController {
     public ResponseEntity<SpecialtyResponse> getSpecialtyDetails(@PathVariable long id){
         return ResponseEntity.ok(specialtyService.getSpecialtyById(id));
     }
+    @PostMapping("/user/specialty/{specialtyId}")
+    public ResponseEntity<SpecialtyResponse> assignUserSpecialty(
+            @PathVariable long specialtyId,
+            org.springframework.security.core.Authentication authentication) {
+        long userId = Long.parseLong((String) authentication.getPrincipal());
+        return ResponseEntity.ok(specialtyService.assignUserSpecialty(userId, specialtyId));
+    }
 }
